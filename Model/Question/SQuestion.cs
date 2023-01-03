@@ -1,8 +1,8 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
+/*
+ * Scale value question.
+ */
 public class SQuestion : Question
 {
     public int numOfSubprompts { get; }

@@ -1,7 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
+/*
+ * C# representation of a list of questions stored in JSON.
+ */
 [System.Serializable]
 public class QuestionDatas
 {

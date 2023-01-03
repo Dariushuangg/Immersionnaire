@@ -1,7 +1,7 @@
 /*
- * Data container class that hold the raw result of JSON parsing.
+ * C# representation of one question stored in JSON.
+ * Contains all definitions of types for questions.
  */
-
 [System.Serializable]
 public class QuestionData
 {

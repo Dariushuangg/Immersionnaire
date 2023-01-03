@@ -1,9 +1,11 @@
 using System;
-using System.Collections.Generic;
 
+/*
+ * Base class for different types of questions.
+ */
 abstract public class Question
 {
-    public enum QuestionType { multipleChoice, sliderScale };
+    public enum QuestionType { MC, S };
     public QuestionType questionType { get; }
     public string prompt { get; }
     public bool canSkip { get; }
