@@ -10,6 +10,9 @@ public class ContentFactory : MonoBehaviour
     public GameObject mandatory;
     public GameObject prompt;
     public Transform testTransform;
+    // Every time the factor produces, it stores information about the objects
+    // it created in indexedGeneratedChoices.
+    public Dictionary<System.Object, UnityEngine.Object> indexedGeneratedChoices;
 
     public void generateAndfillContentBoard(Question question)
     {
@@ -21,6 +24,9 @@ public class ContentFactory : MonoBehaviour
         MethodInfo generateChoices = contentClassName.GetMethod("generateChoices");
         if (generateChoices == null) throw new Exception("No such method: generateChoices");
         List<GameObject> generatedChoiceBoxes = (List<GameObject>) generateChoices.Invoke(Activator.CreateInstance(contentClassName), new object[] { question });
+        indexedGeneratedChoices = (Dictionary<System.Object, UnityEngine.Object>) contentClassName
+            .GetMethod("getIndexedGenerateChoices")
+            .Invoke(Activator.CreateInstance(contentClassName), new object[] { });
         if (generatedChoiceBoxes == null) throw new Exception("Invoke() returns null: generatedChoices");
 
         /* Generate prompts box */
@@ -40,6 +46,4 @@ public class ContentFactory : MonoBehaviour
                 + new Vector3(0, 0.3f, 0);
         }
     }
-
-
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -8,13 +9,15 @@ public class MCUIProgressBarController : MonoBehaviour
     private GameObject selectedFrame;
     private float progressBarValue;
     private UnityEvent<string> selected;
-    // unselected is the Event that a choice is unselected *by direct user interaction*,
-    // i.e. unselection caused by another question selected in a single-choice question does NOT fire this
+
+    // UnityEvent<string> unselected is the Event that a choice is unselected *by direct user interaction*,
+    // e.g. unselection caused by another question selected in a single-choice question should NOT fire this
     private UnityEvent<string> unselected;
+
     private string letter;
     private static readonly int progressBarMaxScale = 8;
     private static readonly float selectingSpeedConstant = 1.1f;
-    private static readonly float unselectingSpeedConstant = 0.8f;
+    private static readonly float unselectingSpeedConstant = 0.7f;
 
     void Start()
     {
@@ -27,23 +30,20 @@ public class MCUIProgressBarController : MonoBehaviour
             .GetComponent<MCUIMainController>().selectingChoice);
         selected.AddListener(Util.findPeerGameObjectByName(gameObject, "Collider")
             .GetComponent<MCUIColliderController>().setUnselectable);
+        selected.AddListener(GameObject.FindGameObjectWithTag("Immersionnaire-ContentBoard")
+            .GetComponent<MCContentController>().showContentEffectOn);
         unselected.AddListener(gameObject.transform.parent.parent.gameObject
             .GetComponent<MCUIMainController>().unselectingChoice);
         unselected.AddListener(Util.findPeerGameObjectByName(gameObject, "Collider")
             .GetComponent<MCUIColliderController>().setSelectable);
+        unselected.AddListener(GameObject.FindGameObjectWithTag("Immersionnaire-ContentBoard")
+            .GetComponent<MCContentController>().hideContentEffectOn);
         progressBarValue = 0;
     }
 
     void Update()
     {
         updateProgressBarUI();
-    }
-
-    private void updateProgressBarUI()
-    {
-        gameObject.transform.localScale = new Vector3(progressBarMaxScale * progressBarValue,
-            progressBarMaxScale * progressBarValue,
-            1);
     }
 
     /* 
@@ -54,7 +54,8 @@ public class MCUIProgressBarController : MonoBehaviour
     {
         progressBarValue += Time.deltaTime * selectingSpeedConstant;
         progressBarValue = Mathf.Clamp(progressBarValue, 0, 1);
-        if (progressBarValue == 1) {
+        if (progressBarValue == 1)
+        {
             if (letter == null) throw new Exception("Letter not set:" + letter);
             selected.Invoke(letter);
             selectedFrame.SetActive(true);
@@ -88,14 +89,18 @@ public class MCUIProgressBarController : MonoBehaviour
     public void zeroProgressBarValue()
     {
         progressBarValue = 0;
-        /* 
-         * Code Path Explanation: If the exit event occurs when the choice is still selected, then 
-         * it means that the "unselecting" attempt failed. We need to re-pump the progress bar value
-         * back to full. 
-         */
-        // else progressBarValue = 1;
     }
 
-    public void fullProgressBarValue() { progressBarValue = 1; }
+    public void fullProgressBarValue()
+    {
+        progressBarValue = 1;
+    }
+
+    private void updateProgressBarUI()
+    {
+        gameObject.transform.localScale = new Vector3(progressBarMaxScale * progressBarValue,
+            progressBarMaxScale * progressBarValue,
+            1);
+    }
 
 }
