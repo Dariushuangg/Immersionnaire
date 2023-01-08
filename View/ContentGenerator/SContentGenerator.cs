@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SContent : MonoBehaviour
+public class SContentGenerator : MonoBehaviour
 {
     public GameObject SChoices;
 

@@ -8,16 +8,10 @@ public class UIFactory : MonoBehaviour
     void Start()
     {
         // Check the location of UIFactory if this is not working. 
-        // These codes are for testing only
-        GameObject UIBoard = GameObject.FindGameObjectWithTag("Immersionnaire-UIBoard");
-        List<GameObject> MCs = Util.getAllChildGameObjects(UIBoard);
-        for (int i = 0; i < MCs.Count; i ++)
-        {
-            MCs[i].transform
-                .Find("Choices")
-                .GetComponent<MCUIChoicesController>()
-                .showChoiceLetter(Util.indexToLetter(i));
-        }
+        
+        // 1. Generate UI and Content
+
+        // 2. Initialize Main Controller
         GetComponent<MCUIMainController>().enabled = true;
     }
 

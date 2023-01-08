@@ -8,37 +8,38 @@ public class QuestionnairePresenter : MonoBehaviour
     private int currQuestionIndex;
     private int firstUnansweredIndex;
     private QuestionnireModel model;
-    private QuestionnaireView view;
-
+    private ContentFactory contentFactory;
+    private GameObject currentContentBoard;
+    private GameObject currentUIBoard;
 
     void Start()
     {
         model = GetComponent<QuestionnireModel>();
         model.initQuestionnaireModel();
-        view = GetComponent<QuestionnaireView>();
+        contentFactory = GetComponent<ContentFactory>();
 
         currQuestionIndex = 0;
         firstUnansweredIndex = 0;
 
-        showNextQuestion();
+        ShowNextQuestion();
     }
 
     /*
      * Display the next question.
      * Listen to user selecting the "next" button.
      */
-    public void showNextQuestion() {
+    public void ShowNextQuestion() {
         currQuestionIndex++;
         Question nextQuestion = model.getQuestionAt(currQuestionIndex);
-        // Display question
-        view.showContentBoardOf(nextQuestion);
+        // Display question on ContentBoard
+        currentContentBoard = contentFactory.GenerateContentBoardFor(nextQuestion);
 
         if (currQuestionIndex == firstUnansweredIndex)
         {
-            // Display "confirm" button but not "modify" button
+            // Display "Confirm" button but not "modify" button
         } else
         {
-            // Display "modify" button but not "confirm" button
+            // Display "modify" button but not "Confirm" button
         }
         if (currQuestionIndex == model.getNumOfQuestions())
         {
@@ -53,7 +54,7 @@ public class QuestionnairePresenter : MonoBehaviour
      * Display the previous question.
      * Listen to user selecting the "back" button.
      */
-    public void showPrevQuestion()
+    public void ShowPrevQuestion()
     {
         currQuestionIndex--;
         Question prevQuestion = model.getQuestionAt(currQuestionIndex);
@@ -69,23 +70,23 @@ public class QuestionnairePresenter : MonoBehaviour
         }
     }
 
-    /*
-    * Confirm submission of response to the question, and display the next question automatically.
-    * Listen to user selecting the "confirm" button.
-    */
-    public void confirm(Response response) {
-        model.addResponse(response);
-        firstUnansweredIndex++;
-        showNextQuestion();
-    }
-
-    /*
-    * Confirm modification of response to a question, and display the next question automatically.
-    * Listen to user selecting the "modify" button.
-    */
-    public void modify(Response response, int index)
-    {
-        model.changeResponseAt(response, index);
-        showNextQuestion();
+    /// <summary>
+    /// Callback function for user clicking the Confirm button. 
+    /// </summary>
+    /// <param name="response">The response to the currently displayed question.</param>
+    public void Confirm(Response response) {
+        if (currQuestionIndex < firstUnansweredIndex)
+        {
+            // Confirm submission of new response, and display the next question automatically.
+            model.addResponse(response);
+            firstUnansweredIndex++;
+            ShowNextQuestion();
+        }
+        else 
+        {
+            // Confirm modification of previous response, and display the next question automatically.
+            model.changeResponseAt(response, currQuestionIndex);
+            ShowNextQuestion();
+        }
     }
 }

@@ -1,34 +1,41 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 /* 
- * Manages content changes on UI events. All ContentController implements two methods: 
+ * Manages content changes on UI events. All ContentController implement two methods: 
  *  - showContentEffectOn()
  *  - hideContentEffectOn()
  */
 public class MCContentController : MonoBehaviour
 {
     private Dictionary<string, GameObject> MCChoiceEffects = new Dictionary<string, GameObject>();
+    private Dictionary<string, GameObject> MCChoiceTexts = new Dictionary<string, GameObject>();
+    private static readonly Color offColor = Color.white;
+    private static readonly Color onColor = Color.green;
 
     void Start()
     {
         /* Initialize the list of cubes that would change on UI event */
-        Dictionary<System.Object, UnityEngine.Object> indexedGeneratedContent = GetComponent<ContentFactory>().indexedGeneratedChoices;
+        // Dictionary<string, GameObject> indexedGeneratedContent = GetComponent<ContentFactory>().indexedGeneratedChoices;
         
-        foreach (string letter in indexedGeneratedContent.Keys)
-        {
-            MCChoiceEffects.Add(letter, ((GameObject)indexedGeneratedContent[letter]).transform.Find("SelectCube").gameObject);
-        }
+        if (MCChoiceEffects.Count == 0) throw new Exception("Initialization failed: MCChoiceEffects");
     }
 
     public void showContentEffectOn(string choice) 
     { 
-    
+        foreach(string letter in MCChoiceEffects.Keys)
+        {
+            if (letter == choice) MCChoiceEffects[letter].GetComponent<MeshRenderer>().material.color = Color.green;
+        }
     }
 
     public void hideContentEffectOn(string choice)
     {
-
+        foreach (string letter in MCChoiceEffects.Keys)
+        {
+            if (letter == choice) MCChoiceEffects[letter].GetComponent<MeshRenderer>().material.color = Color.white;
+        }
     }
 }

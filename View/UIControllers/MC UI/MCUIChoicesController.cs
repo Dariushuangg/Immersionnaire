@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// !!! DEPRECATED
 public class MCUIChoicesController : MonoBehaviour
 {
     public string letter;
@@ -12,3 +13,4 @@ public class MCUIChoicesController : MonoBehaviour
         this.letter = letter;
     }
 }
+// !!! DEPRECATED

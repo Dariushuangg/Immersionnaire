@@ -7,6 +7,6 @@ public class QuestionnaireView : MonoBehaviour
     public void showContentBoardOf(Question question)
     {
         ContentFactory factory = GetComponent<ContentFactory>();
-        factory.generateAndfillContentBoard(question);
+        factory.GenerateContentBoardFor(question);
     }
 }
