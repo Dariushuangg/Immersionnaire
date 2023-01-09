@@ -4,12 +4,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class MCUIMainController : MonoBehaviour
+public class MCUIMainController : MonoBehaviour, UIMainController
 {
     public Dictionary<string, bool> IsLetterSelected { get; } = new Dictionary<string, bool>();
     public UnityEvent MainButtomSelected;
-    public UnityEvent ForwardButtonSelected { get; }
-    public UnityEvent BackwardButtonSelected { get; }
+    public UnityEvent ForwardButtonSelected { get; set; }
+    public UnityEvent BackwardButtonSelected { get; set; }
+
     private int numOfQuestions;
     private bool allowMultipleChoices;
     private Dictionary<string, GameObject> SelectedFrames = new Dictionary<string, GameObject>();
@@ -17,8 +18,8 @@ public class MCUIMainController : MonoBehaviour
     void OnEnable()
     {
         // InitializeMCUI() must be called after UIFactory has generated the UI content.
-        // UI Factory should initialize the MainController by informing it the number of questions, and if MC is allowed.
-        InitializeMCUIControllers(4, true);
+        // UI Factory should initialize the UIMainController by informing it the number of questions, and if MC is allowed.
+        InitControllers(4, true);
     }
 
     /// <summary>
@@ -59,11 +60,44 @@ public class MCUIMainController : MonoBehaviour
         debugPrintSelected();
     }
 
-    private void InitializeMCUIControllers(int numOfQuestions, bool allowMultipleChoices)
+    public void ShowResponseHistory(Response response)
+    {
+        MCQResponse mcqResponse = (MCQResponse)response;
+        foreach(string letter in mcqResponse.SelectedChoices)
+        {
+            IsLetterSelected[letter] = true;
+        }
+
+        GameObject choices = gameObject.transform.Find("Choices").gameObject;
+        List<GameObject> allChoiceParents = Util.GetAllChildGameObjects(choices);
+        foreach (GameObject choiceParent in allChoiceParents)
+        {
+            if (IsLetterSelected[choiceParent.name]) RenderAsSelected(choiceParent);
+        }
+    }
+
+    /// <summary>
+    /// Render a choice in MCQ UIBoard as selected by setting progress bar and selected frame.
+    /// </summary>
+    private void RenderAsSelected(GameObject choiceParent)
+    {
+        string letter = choiceParent.name;
+        GameObject selectedFrame = choiceParent.transform.Find("SelectedFrame" + letter).gameObject;
+        selectedFrame.SetActive(true);
+        GameObject progressBar = choiceParent.transform.Find("ProgressBar" + letter).gameObject;
+        progressBar.GetComponent<MCUIProgressBarController>().fullProgressBarValue();
+    }
+
+    private void InitControllers(int numOfQuestions, bool allowMultipleChoices)
     {
         /* Register event handlers for UI events */
         MainButtomSelected = new UnityEvent();
         MainButtomSelected.AddListener(ConfirmingChoice);
+        GameObject presenter = GameObject.FindGameObjectWithTag("Immersionnaire-Presenter");
+        ForwardButtonSelected = new UnityEvent();
+        ForwardButtonSelected.AddListener(presenter.GetComponent<QuestionnairePresenter>().Forward);
+        BackwardButtonSelected = new UnityEvent();
+        BackwardButtonSelected.AddListener(presenter.GetComponent<QuestionnairePresenter>().Back);
 
         this.numOfQuestions = numOfQuestions;
         this.allowMultipleChoices = allowMultipleChoices;

@@ -26,7 +26,7 @@ public class QuestionnairePresenter : MonoBehaviour
         uiFactory = GetComponent<UIFactory>();
 
         /* Generate the first question on UIBoard and ContentBoard */
-        Question firstQuestion = model.getQuestionAt(0);
+        Question firstQuestion = model.GetQuestionAt(0);
         currentContentBoard = contentFactory.GenerateContentBoard(firstQuestion, DefaultContentBoardTransform);
         currentUIBoard = uiFactory.GenerateUIBoard(firstQuestion, DefaultUIBoardTransform);
 
@@ -61,7 +61,24 @@ public class QuestionnairePresenter : MonoBehaviour
 
     public void Back()
     {
+        currQuestionIndex--;
+        ShowPrevResponseAt(currQuestionIndex);
+    }
 
+    public void Forward() 
+    {
+        currQuestionIndex++;
+        ShowPrevResponseAt(currQuestionIndex);
+    }
+
+    private void ShowPrevResponseAt(int index)
+    {
+        ShowQuestionAt(index);
+        Response prevResponse = model.GetResponseAt(index);
+        Component MainController = currentUIBoard.GetComponent(typeof(UIMainController));
+        ((UIMainController)MainController).ShowResponseHistory(prevResponse);
+        SetBackForwardButtons();
+        SetMainButtonType();
     }
 
     /// <summary>
@@ -69,7 +86,7 @@ public class QuestionnairePresenter : MonoBehaviour
     /// </summary>
     private void ShowQuestionAt(int index)
     {
-        Question questionToDisplay = model.getQuestionAt(index);
+        Question questionToDisplay = model.GetQuestionAt(index);
 
         // Display question on ContentBoard at the previous ContentBoard's location
         Transform LastContentBoardTransform = currentContentBoard.transform;

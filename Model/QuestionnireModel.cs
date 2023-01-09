@@ -9,9 +9,15 @@ public class QuestionnireModel : MonoBehaviour
     private string sessionIdentifier;
 
     /* Get the data of a specific question for the caller to display.*/
-    public Question getQuestionAt(int index) {
+    public Question GetQuestionAt(int index) {
         if (index > questions.Count - 1) throw new Exception("Index out of range for questions: index = " + index);
         return questions[index];
+    }
+
+    public Response GetResponseAt(int index)
+    {
+        if (index > responses.Count - 1) throw new Exception("Index out of range for responses: index = " + index);
+        return responses[index];
     }
 
     /* Get the number of questions in the questionnaire */
