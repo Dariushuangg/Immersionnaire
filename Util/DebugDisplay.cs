@@ -17,7 +17,7 @@ public class DebugDisplay : MonoBehaviour
         for (int i = 0; i < debugLogs.Count; i++)
         {
             GameObject generatedText = Instantiate(TextBox, Vector3.zero, Quaternion.identity);
-            generatedText.transform.parent = TextBoxTransform;
+            generatedText.transform.SetParent(TextBoxTransform);
             generatedText.transform.localPosition = new Vector3(0, 10 * i, 0);
             generatedText.transform.localScale = new Vector3(1, 1, 1);
             generatedText.transform.localRotation = Quaternion.identity;

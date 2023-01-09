@@ -12,4 +12,9 @@ public class SQuestion : Question
         subprompts = rawData.subprompts;
         if (numOfSubprompts != subprompts.Length) throw new Exception("Invalid Question Input: subprompts");
     }
+
+    public override int GetNumOfQuestion()
+    {
+        return numOfSubprompts;
+    }
 }

@@ -15,7 +15,7 @@ public class MCUIChoiceCollider : MonoBehaviour
     private UnityEvent exitedWhileUnselecting;
     private GameObject progressBar;
 
-    void Start()
+    void OnEnable()
     {
         letter = gameObject.transform.parent.name;
         progressBar = Util.FindPeerGameObjectByName(gameObject, "ProgressBar" + letter);

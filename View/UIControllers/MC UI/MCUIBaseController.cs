@@ -26,8 +26,8 @@ public class MCUIBaseController : MonoBehaviour
     {
         if (FollowLeftCollider) followLeftCollider();
         // if (FollowRightCollider) followRightCollider();
-        Util.SetDebugLog("Collider left dragged", "" + FollowLeftCollider, true);
-        Util.SetDebugLog("Collider right dragged", "" + FollowRightCollider, true);
+        // Util.SetDebugLog("Collider left dragged", "" + FollowLeftCollider, true);
+        // Util.SetDebugLog("Collider right dragged", "" + FollowRightCollider, true);
     }
 
     private void followCollider(string which, bool isDragged) {

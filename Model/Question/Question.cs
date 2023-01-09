@@ -15,4 +15,6 @@ abstract public class Question
         prompt = rawData.prompt;
         canSkip = rawData.canSkip;
     }
+
+    public abstract int GetNumOfQuestion();
  }

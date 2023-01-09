@@ -9,7 +9,10 @@ public class QuestionnireModel : MonoBehaviour
     private string sessionIdentifier;
 
     /* Get the data of a specific question for the caller to display.*/
-    public Question getQuestionAt(int index) { return questions[index]; }
+    public Question getQuestionAt(int index) {
+        if (index > questions.Count - 1) throw new Exception("Index out of range for questions: index = " + index);
+        return questions[index];
+    }
 
     /* Get the number of questions in the questionnaire */
     public int getNumOfQuestions() { return questions.Count; }
@@ -30,6 +33,7 @@ public class QuestionnireModel : MonoBehaviour
     public void initQuestionnaireModel(string customSessionID) {
         sessionIdentifier = customSessionID;
         initializeQuestions();
+        responses = new List<Response>();
     }
 
     /* Initialize questionnaire model contents. Called if the user does not provide session ID */
@@ -37,6 +41,7 @@ public class QuestionnireModel : MonoBehaviour
     {
         sessionIdentifier = initializeUserID();
         initializeQuestions();
+        responses = new List<Response>();
     }
 
     /* Serialize and save the completed questionnaire model contents. */

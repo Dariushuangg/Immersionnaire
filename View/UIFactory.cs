@@ -4,20 +4,23 @@ using UnityEngine;
 
 public class UIFactory : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public GameObject GenerateUIBoard(Question question, Transform tf)
     {
-        // Check the location of UIFactory if this is not working. 
-        
-        // 1. Generate UI and Content
+        string UIBoardType = question.questionType.ToString();
+        string numOfQuestions = question.GetNumOfQuestion().ToString();
+        GameObject UIBoardResource = Resources.Load<GameObject>("Prefabs/UIBoard/" + UIBoardType + numOfQuestions);
+        GameObject generatedUIBoard = Instantiate(UIBoardResource, Vector3.zero, Quaternion.identity);
+        // Util.SetDebugLog("UIFactory check, loading", "Prefabs/UIBoard/" + UIBoardType + numOfQuestions, true);
 
-        // 2. Initialize Main Controller
-        GetComponent<MCUIMainController>().enabled = true;
-    }
+        // Set text
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        // Set transform of UI board
+        generatedUIBoard.transform.position = tf.position;
+        generatedUIBoard.transform.rotation = tf.rotation;
+        generatedUIBoard.transform.localScale = tf.localScale;
+
+        // Enable main controller of the UI Board.
+        generatedUIBoard.GetComponent<MCUIMainController>().enabled = true;
+        return generatedUIBoard;
     }
 }

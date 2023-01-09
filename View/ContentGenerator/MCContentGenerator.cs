@@ -12,7 +12,6 @@ public class MCContentGenerator : MonoBehaviour, ContentGenerator
      */
     public GameObject GenerateContents(Question question)
     {
-        Util.SetDebugLog("Generater", "Generater called", true);
         /* Generated MC ContentBoard. */
         MCQuestion mcquestion = (MCQuestion)question;
         MCContentBoard = Resources.Load<GameObject>("Prefabs/ContentBoard/MCQContentBoard");

@@ -16,8 +16,8 @@ public class MCUIBaseBoardCollider : MonoBehaviour
     {
         count += 1;
         GameObject baseBoard = Util.FindPeerGameObjectByName(gameObject.transform.parent.gameObject, "BaseBoard");
-        Util.SetDebugLog("hi", "" + count, true);
-        Util.SetDebugLog("baseboard check", baseBoard.name, true);
+        // Util.SetDebugLog("hi", "" + count, true);
+        // Util.SetDebugLog("baseboard check", baseBoard.name, true);
         baseBoard.GetComponent<MCUIBaseController>().colliderDragged.Invoke(gameObject.name, true);
     }
 

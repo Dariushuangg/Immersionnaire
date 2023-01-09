@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class MCUIMainButtonController : MonoBehaviour
 {
-    public enum MainBottomStatus { Hide = 0, Confirm = 1, Modify = 2 };
-    public MainBottomStatus CurrentStatus;
+    // Use FSM pattern.
+    public enum MainBottomStatus {Hide = 0, Confirm = 1, Modify = 2 };
+    private MainBottomStatus CurrentStatus;
+    private MainBottomStatus PreHiddenStatus; 
     private GameObject MainBottomCollider;
     private GameObject MainBottomHider;
 

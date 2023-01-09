@@ -7,20 +7,20 @@ using UnityEngine;
 public class ContentFactory : MonoBehaviour
 {
     /// <summary>
-    /// Generate and fill the content board for the given question.
+    /// Generate and fill the content board for the given question at the given transform.
     /// </summary>
-    public GameObject GenerateContentBoardFor(Question question)
+    public GameObject GenerateContentBoard(Question question, Transform tf)
     {
         // Generate raw content board
         Type contentGeneratorClassName = Type.GetType(question.questionType + "ContentGenerator");
         MethodInfo GenerateContents = contentGeneratorClassName.GetMethod("GenerateContents");
-        if (GenerateContents == null) throw new Exception("No such method: GenerateContents");
+        if (GenerateContents == null) throw new Exception("No GenerateContents method in generator: " + contentGeneratorClassName.ToString());
         GameObject GeneratedContents = (GameObject)GenerateContents.Invoke(Activator.CreateInstance(contentGeneratorClassName), new object[] { question });
 
         // Set position of content board
-        // for testing only, ImmersionnaireScripts is set to the desired location/rotation
-        GeneratedContents.transform.position = gameObject.transform.position; 
-        GeneratedContents.transform.rotation = gameObject.transform.rotation;
+        GeneratedContents.transform.position = tf.position; 
+        GeneratedContents.transform.rotation = tf.rotation;
+        GeneratedContents.transform.localScale = tf.localScale;
 
         return GeneratedContents;
     }

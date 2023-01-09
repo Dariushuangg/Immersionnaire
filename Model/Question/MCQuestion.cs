@@ -9,4 +9,9 @@ public class MCQuestion : Question
         choiceText = rawData.choiceText;
         if (numOfChoices != choiceText.Length) throw new Exception("Invalid Question Input: choiceText");
     }
+
+    public override int GetNumOfQuestion()
+    {
+        return numOfChoices;
+    }
 }

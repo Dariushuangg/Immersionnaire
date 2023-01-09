@@ -74,17 +74,21 @@ public class MCUIMainController : MonoBehaviour
             IsLetterSelected.Add(Util.indexToLetter(i), false);
         }
 
-        /* Initialize an array to keep track of selected frames that will react to UI events */
         GameObject choices = gameObject.transform.Find("Choices").gameObject;
         List<GameObject> allChoiceParents = Util.GetAllChildGameObjects(choices);
         if (choices == null) throw new Exception("choices is null: choices");
         foreach (GameObject choiceParent in allChoiceParents)
         {
+            /* Initialize an array to keep track of selected frames that will react to UI events */
             string letter = choiceParent.name;
-            Debug.Log("Letter:" + letter);
             Transform selectedFrame = choiceParent.transform.Find("SelectedFrame" + letter);
             if (selectedFrame == null) throw new Exception("No such frame found: selectedFrame");
             SelectedFrames.Add(letter, selectedFrame.gameObject);
+
+            /* Enable collider controllers */
+            Transform collider = choiceParent.transform.Find("Collider" + letter);
+            Util.checkNull(collider);
+            collider.GetComponent<MCUIChoiceCollider>().enabled = true;
         }
     }
 
@@ -96,7 +100,6 @@ public class MCUIMainController : MonoBehaviour
         }
         MCQResponse response = new MCQResponse(IsAnyChoiceSelected(), selectedChoices);
         GameObject presenter = GameObject.FindGameObjectWithTag("Immersionnaire-Presenter");
-        Util.SetDebugLog("Presenter check: ", presenter.name, true);
         presenter.GetComponent<QuestionnairePresenter>().Confirm(response);
     }
 
@@ -129,7 +132,7 @@ public class MCUIMainController : MonoBehaviour
     private void debugPrintSelected() { 
         foreach(string l in IsLetterSelected.Keys)
         {
-            Util.SetDebugLog("IsLetterSelected -" + l, " " + IsLetterSelected[l], true);
+            // Util.SetDebugLog("IsLetterSelected -" + l, " " + IsLetterSelected[l], true);
         }
     }
 }

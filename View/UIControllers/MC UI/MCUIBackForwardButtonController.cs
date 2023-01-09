@@ -38,7 +38,7 @@ public class MCUIBackForwardButtonController : MonoBehaviour
     /// Set the status of the forward button, change corresponding UI.
     /// </summary>
     /// <param name="status"></param>
-    public void setForwardButtonStatus(ForwardButtonStatus status)
+    public void SetForwardButtonStatus(ForwardButtonStatus status)
     {
         CurrentForwardButtonStatus = status;
         ChangeForwardButtonTo(status);
@@ -62,7 +62,7 @@ public class MCUIBackForwardButtonController : MonoBehaviour
     /// Set the status of the forward button, change corresponding UI.
     /// </summary>
     /// <param name="status"></param>
-    public void setBackwardButtonStatus(BackwardButtonStatus status)
+    public void SetBackwardButtonStatus(BackwardButtonStatus status)
     {
         CurrentBackwardButtonStatus = status;
         ChangeBackwardButtonTo(status);
