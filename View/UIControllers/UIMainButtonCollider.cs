@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MCUIMainButtonCollider : MonoBehaviour
+public class UIMainButtonCollider : MonoBehaviour
 {
     void OnTriggerExit(Collider other)
     {

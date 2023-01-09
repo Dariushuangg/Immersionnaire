@@ -20,6 +20,7 @@ public class UIFactory : MonoBehaviour
         generatedUIBoard.transform.localScale = tf.localScale;
 
         // Enable main controller of the UI Board.
+        // Initialization of all sub-controllers are completed in the main controller init process. 
         generatedUIBoard.GetComponent<MCUIMainController>().enabled = true;
         return generatedUIBoard;
     }

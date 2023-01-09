@@ -2,12 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MCUIMainButtonController : MonoBehaviour
+public class UIMainButtonController : MonoBehaviour
 {
     // Use FSM pattern.
-    public enum MainBottomStatus {Hide = 0, Confirm = 1, Modify = 2 };
+    public enum MainButtonType { Confirm, Modify };
+    public enum MainBottomStatus { Hide, Show };
+    private MainButtonType mainButtomType;
     private MainBottomStatus CurrentStatus;
-    private MainBottomStatus PreHiddenStatus; 
     private GameObject MainBottomCollider;
     private GameObject MainBottomHider;
 
@@ -19,31 +20,34 @@ public class MCUIMainButtonController : MonoBehaviour
     }
 
     /// <summary>
-    /// Set the status of the main button to the given parameter.
+    /// Initialize the type of the button. Must be called first.
     /// </summary>
-    public void SetCurrentStatus(MainBottomStatus status)
+    public void SetButtonType(MainButtonType mainButtonType)
     {
-        CurrentStatus = status;
-        ChangeTo(CurrentStatus);
+        this.mainButtomType = mainButtonType;
     }
 
-    private void ChangeTo(MainBottomStatus status)
+    /// <summary>
+    /// Hide or show the main button.
+    /// </summary>
+    public void SetButtonStatus(MainBottomStatus status)
     {
-        if ((int)status == 0)
+        CurrentStatus = status;
+        ChangeStatusTo(CurrentStatus);
+    }
+
+    private void ChangeStatusTo(MainBottomStatus status)
+    {
+        if (status == MainBottomStatus.Hide)
         {
             MainBottomCollider.SetActive(false);
             MainBottomHider.SetActive(true);
         }
-        else if ((int)status == 1)
+        else 
         {
             MainBottomCollider.SetActive(true);
             MainBottomHider.SetActive(false);
         }
-        else
-        {
-            /* TODO: Add the "Modify" button asset */
-        }
-
     }
 
 }

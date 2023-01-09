@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MCUIBackwardButtonCollider : MonoBehaviour
+public class UIBackwardButtonCollider : MonoBehaviour
 {
     void OnTriggerExit(Collider other)
     {

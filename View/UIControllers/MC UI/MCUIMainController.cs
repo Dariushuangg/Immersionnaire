@@ -18,7 +18,7 @@ public class MCUIMainController : MonoBehaviour
     {
         // InitializeMCUI() must be called after UIFactory has generated the UI content.
         // UI Factory should initialize the MainController by informing it the number of questions, and if MC is allowed.
-        InitializeMCUI(4, true);
+        InitializeMCUIControllers(4, true);
     }
 
     /// <summary>
@@ -59,7 +59,7 @@ public class MCUIMainController : MonoBehaviour
         debugPrintSelected();
     }
 
-    private void InitializeMCUI(int numOfQuestions, bool allowMultipleChoices)
+    private void InitializeMCUIControllers(int numOfQuestions, bool allowMultipleChoices)
     {
         /* Register event handlers for UI events */
         MainButtomSelected = new UnityEvent();
@@ -73,6 +73,11 @@ public class MCUIMainController : MonoBehaviour
         {
             IsLetterSelected.Add(Util.indexToLetter(i), false);
         }
+
+        /* Initialize backward and forward button controllers */
+        gameObject.transform.Find("BackForwardButtons")
+            .GetComponent<UIBackForwardButtonController>()
+            .InitForBackwardButtonControllers();
 
         GameObject choices = gameObject.transform.Find("Choices").gameObject;
         List<GameObject> allChoiceParents = Util.GetAllChildGameObjects(choices);
@@ -100,7 +105,7 @@ public class MCUIMainController : MonoBehaviour
         }
         MCQResponse response = new MCQResponse(IsAnyChoiceSelected(), selectedChoices);
         GameObject presenter = GameObject.FindGameObjectWithTag("Immersionnaire-Presenter");
-        presenter.GetComponent<QuestionnairePresenter>().Confirm(response);
+        presenter.GetComponent<QuestionnairePresenter>().Submit(response);
     }
 
     /// <summary>
@@ -118,14 +123,14 @@ public class MCUIMainController : MonoBehaviour
         if (show)
         {
             gameObject.transform.Find("MainButton")
-                .GetComponent<MCUIMainButtonController>()
-                .SetCurrentStatus(MCUIMainButtonController.MainBottomStatus.Confirm);
+                .GetComponent<UIMainButtonController>()
+                .SetButtonStatus(UIMainButtonController.MainBottomStatus.Show);
         }
         else
         {
             gameObject.transform.Find("MainButton")
-                .GetComponent<MCUIMainButtonController>()
-                .SetCurrentStatus(MCUIMainButtonController.MainBottomStatus.Hide);
+                .GetComponent<UIMainButtonController>()
+                .SetButtonStatus(UIMainButtonController.MainBottomStatus.Hide);
         }
     }
 

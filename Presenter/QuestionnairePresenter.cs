@@ -25,7 +25,7 @@ public class QuestionnairePresenter : MonoBehaviour
         contentFactory = GetComponent<ContentFactory>();
         uiFactory = GetComponent<UIFactory>();
 
-        /* Generate the first question */
+        /* Generate the first question on UIBoard and ContentBoard */
         Question firstQuestion = model.getQuestionAt(0);
         currentContentBoard = contentFactory.GenerateContentBoard(firstQuestion, DefaultContentBoardTransform);
         currentUIBoard = uiFactory.GenerateUIBoard(firstQuestion, DefaultUIBoardTransform);
@@ -39,67 +39,51 @@ public class QuestionnairePresenter : MonoBehaviour
         firstUnansweredIndex = 0;
     }
 
-    /*
-     * Display the next question.
-     * Listen to user selecting the "next" button.
-     */
-    public void ShowNextQuestion() {
-        currQuestionIndex++;
-        Question nextQuestion = model.getQuestionAt(currQuestionIndex);
-        // Util.SetDebugLog("index debug", "getQuestionAt:" + currQuestionIndex + "prompt is" + nextQuestion.prompt, true);
-
-        // Display question on ContentBoard at the previous ContentBoard's location
-        Transform PrevContentBoardTransform = currentContentBoard.transform;
-        RemoveCurrentContentBoard();
-        currentContentBoard = contentFactory.GenerateContentBoard(nextQuestion, PrevContentBoardTransform);
-
-        // Display correct UIBoard at the previous UIBoard's location
-        Transform PrevUIBoardTransform = currentUIBoard.transform;
-        RemoveCurrentUIBoard();
-        currentUIBoard = uiFactory.GenerateUIBoard(nextQuestion, PrevUIBoardTransform);
-
-        SetBackForwardButtons();
-
-    }
-
-    /*
-     * Display the previous question.
-     * Listen to user selecting the "back" button.
-     */
-    public void ShowPrevQuestion()
-    {
-        currQuestionIndex--;
-        Question prevQuestion = model.getQuestionAt(currQuestionIndex);
-        // Display question
-
-        if (currQuestionIndex == 0)
-        {
-            // Allow "back" button
-        }
-        else
-        {
-            // Disallow "back" button
-        }
-    }
-
     /// <summary>
     /// Callback function for user clicking the Confirm button. 
     /// </summary>
     /// <param name="response">The response to the currently displayed question.</param>
-    public void Confirm(Response response) {
+    public void Submit(Response response) {
         if (currQuestionIndex == firstUnansweredIndex)
         {
-            // Confirm submission of new response, and display the next question automatically.
+            // Submission of new response, and display the next question automatically.
             model.addResponse(response);
             firstUnansweredIndex++;
         }
         else
         {
-            // Confirm modification of previous response, and display the next question automatically.
+            // Submission of modification of previous response, and display the next question automatically.
             model.changeResponseAt(response, currQuestionIndex);
         }
-        ShowNextQuestion();
-        Util.SetDebugLog("111Check Index", "currQuestionIndex = " + currQuestionIndex + ", firstUnansweredIndex = " + firstUnansweredIndex, true);
+        currQuestionIndex++;
+        ShowQuestionAt(currQuestionIndex);
+    }
+
+    public void Back()
+    {
+
+    }
+
+    /// <summary>
+    /// Display question at the given index on both UI board and content board. 
+    /// </summary>
+    private void ShowQuestionAt(int index)
+    {
+        Question questionToDisplay = model.getQuestionAt(index);
+
+        // Display question on ContentBoard at the previous ContentBoard's location
+        Transform LastContentBoardTransform = currentContentBoard.transform;
+        RemoveCurrentContentBoard();
+        currentContentBoard = contentFactory.GenerateContentBoard(questionToDisplay, LastContentBoardTransform);
+
+        // Display correct UIBoard at the previous UIBoard's location
+        Transform PrevUIBoardTransform = currentUIBoard.transform;
+        RemoveCurrentUIBoard();
+        currentUIBoard = uiFactory.GenerateUIBoard(questionToDisplay, PrevUIBoardTransform);
+
+        // Set buttons on the UIBoard
+        SetBackForwardButtons();
+        SetMainButtonType();
     }
 
     private void RemoveCurrentContentBoard() {
@@ -111,51 +95,51 @@ public class QuestionnairePresenter : MonoBehaviour
         Destroy(prevContentBoard);
     }
     private void RemoveCurrentUIBoard() {
-        prevUIBoard = currentUIBoard; // Same reason.
+        prevUIBoard = currentUIBoard; // Same reason as above
         Destroy(prevUIBoard);
     }
 
     /// <summary>
-    /// Wrapper around SetForwardButtonStatus() in MCUIBackForwardButtonController
+    /// Wrapper around SetForwardButtonStatus() in UIBackForwardButtonController
     /// </summary>
-    private void SetForwardButtonStatus(MCUIBackForwardButtonController.ForwardButtonStatus status) 
+    private void SetForwardButtonStatus(UIBackForwardButtonController.ForwardButtonStatus status) 
     {
         currentUIBoard.transform.Find("BackForwardButtons")
-            .GetComponent<MCUIBackForwardButtonController>()
+            .GetComponent<UIBackForwardButtonController>()
             .SetForwardButtonStatus(status);
     }
 
     /// <summary>
-    /// Wrapper around SetBackwardButtonStatus() in MCUIBackForwardButtonController
+    /// Wrapper around SetBackwardButtonStatus() in UIBackForwardButtonController
     /// </summary>
-    private void SetBackwardButtonStatus(MCUIBackForwardButtonController.BackwardButtonStatus status)
+    private void SetBackwardButtonStatus(UIBackForwardButtonController.BackwardButtonStatus status)
     {
         currentUIBoard.transform.Find("BackForwardButtons")
-            .GetComponent<MCUIBackForwardButtonController>()
+            .GetComponent<UIBackForwardButtonController>()
             .SetBackwardButtonStatus(status);
     }
 
     private void SetBackForwardButtons()
     {
         // Set forward button visibility
-        if (currQuestionIndex == firstUnansweredIndex) SetForwardButtonStatus(MCUIBackForwardButtonController.ForwardButtonStatus.Hide);
-        else SetForwardButtonStatus(MCUIBackForwardButtonController.ForwardButtonStatus.Show);
+        if (currQuestionIndex == firstUnansweredIndex) SetForwardButtonStatus(UIBackForwardButtonController.ForwardButtonStatus.Hide);
+        else SetForwardButtonStatus(UIBackForwardButtonController.ForwardButtonStatus.Show);
 
         // Set backward button visibility
-        if (currQuestionIndex != 0) SetBackwardButtonStatus(MCUIBackForwardButtonController.BackwardButtonStatus.Show);
-        else SetBackwardButtonStatus(MCUIBackForwardButtonController.BackwardButtonStatus.Hide);
+        if (currQuestionIndex != 0) SetBackwardButtonStatus(UIBackForwardButtonController.BackwardButtonStatus.Show);
+        else SetBackwardButtonStatus(UIBackForwardButtonController.BackwardButtonStatus.Hide);
     }
 
-    private void SetMainButton() 
+    private void SetMainButtonType() 
     {
         if (currQuestionIndex == firstUnansweredIndex)
         currentUIBoard.transform.Find("MainButton")
-            .GetComponent<MCUIMainButtonController>()
-            .SetCurrentStatus(MCUIMainButtonController.MainBottomStatus.Confirm);
+            .GetComponent<UIMainButtonController>()
+            .SetButtonType(UIMainButtonController.MainButtonType.Confirm);
         else
         currentUIBoard.transform.Find("MainButton")
-            .GetComponent<MCUIMainButtonController>()
-            .SetCurrentStatus(MCUIMainButtonController.MainBottomStatus.Modify);
+            .GetComponent<UIMainButtonController>()
+            .SetButtonType(UIMainButtonController.MainButtonType.Modify);
     }
 
 }

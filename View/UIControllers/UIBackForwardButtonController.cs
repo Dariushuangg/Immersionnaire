@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MCUIBackForwardButtonController : MonoBehaviour
+public class UIBackForwardButtonController : MonoBehaviour
 {
     public enum ForwardButtonStatus { Hide = 0, Show = 1 };
     private ForwardButtonStatus CurrentForwardButtonStatus;
@@ -14,7 +14,10 @@ public class MCUIBackForwardButtonController : MonoBehaviour
     private GameObject BackwardButtonStatusCollider;
     private GameObject BackwardButtonStatusHider;
 
-    void Start()
+    /// <summary>
+    /// Must be called when generating the UI Board.
+    /// </summary>
+    public void InitForBackwardButtonControllers()
     {
         CurrentForwardButtonStatus = ForwardButtonStatus.Hide;
         ForwardButtonStatusCollider = Util.FindChildGameObjectByName(
@@ -31,7 +34,6 @@ public class MCUIBackForwardButtonController : MonoBehaviour
         BackwardButtonStatusHider = Util.FindChildGameObjectByName(
             Util.FindChildGameObjectByName(gameObject, "BackwardButton"),
             "BackwardButtonHider");
-
     }
 
     /// <summary>
@@ -46,7 +48,7 @@ public class MCUIBackForwardButtonController : MonoBehaviour
 
     private void ChangeForwardButtonTo(ForwardButtonStatus status) 
     {
-        if ((int)status == 0)
+        if (status == ForwardButtonStatus.Hide)
         {
             ForwardButtonStatusCollider.SetActive(false);
             ForwardButtonStatusHider.SetActive(true);
