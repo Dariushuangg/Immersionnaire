@@ -11,6 +11,7 @@ public class QuestionnireModel : MonoBehaviour
     /* Get the data of a specific question for the caller to display.*/
     public Question GetQuestionAt(int index) {
         if (index > questions.Count - 1) throw new Exception("Index out of range for questions: index = " + index);
+        Util.SetDebugLog("GetQuestionAt index", index.ToString(), true);
         return questions[index];
     }
 
