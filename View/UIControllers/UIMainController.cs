@@ -18,5 +18,5 @@ public interface UIMainController
     /// Initialize main and sub-controllers based upon question contents.
     /// </summary>
     /// <param name="question">Question to-be-rendered.</param>
-    // public void InitControllers(Question question);
+    public void InitControllers(Question question);
 }

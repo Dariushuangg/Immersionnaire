@@ -19,9 +19,10 @@ public class UIFactory : MonoBehaviour
         generatedUIBoard.transform.rotation = tf.rotation;
         generatedUIBoard.transform.localScale = tf.localScale;
 
-        // Enable main controller of the UI Board.
-        // Initialization of all sub-controllers are completed in the main controller init process. 
-        generatedUIBoard.GetComponent<MCUIMainController>().enabled = true;
+        // Initialization of all sub-controllers are completed in the main controller's InitControllers(). 
+        UIMainController mainController = (UIMainController)generatedUIBoard.GetComponent(typeof(UIMainController));
+        mainController.InitControllers(question);
+
         return generatedUIBoard;
     }
 }

@@ -15,13 +15,6 @@ public class MCUIMainController : MonoBehaviour, UIMainController
     private bool allowMultipleChoices;
     private Dictionary<string, GameObject> SelectedFrames = new Dictionary<string, GameObject>();
 
-    void OnEnable()
-    {
-        // InitializeMCUI() must be called after UIFactory has generated the UI content.
-        // UI Factory should initialize the UIMainController by informing it the number of questions, and if MC is allowed.
-        InitControllers(4, true);
-    }
-
     /// <summary>
     /// Callback function when a choice is unselected.
     /// </summary>
@@ -88,8 +81,10 @@ public class MCUIMainController : MonoBehaviour, UIMainController
         progressBar.GetComponent<MCUIProgressBarController>().fullProgressBarValue();
     }
 
-    private void InitControllers(int numOfQuestions, bool allowMultipleChoices)
+    public void InitControllers(Question question)
     {
+        MCQuestion mcquestion = (MCQuestion)question;
+
         /* Register event handlers for UI events */
         MainButtomSelected = new UnityEvent();
         MainButtomSelected.AddListener(ConfirmingChoice);
@@ -99,8 +94,8 @@ public class MCUIMainController : MonoBehaviour, UIMainController
         BackwardButtonSelected = new UnityEvent();
         BackwardButtonSelected.AddListener(presenter.GetComponent<QuestionnairePresenter>().Back);
 
-        this.numOfQuestions = numOfQuestions;
-        this.allowMultipleChoices = allowMultipleChoices;
+        this.numOfQuestions = mcquestion.numOfChoices;
+        this.allowMultipleChoices = mcquestion.AllowMultipleChoice();
 
         /* Initialize an array to keep track of whether a choice is selected */
         for (int i = 0; i < numOfQuestions; i++)
