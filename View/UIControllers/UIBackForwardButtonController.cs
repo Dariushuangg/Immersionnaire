@@ -23,6 +23,7 @@ public class UIBackForwardButtonController : MonoBehaviour
         ForwardButtonStatusCollider = Util.FindChildGameObjectByName(
             Util.FindChildGameObjectByName(gameObject, "ForwardButton"),
             "ForwardButtonCollider");
+        ForwardButtonStatusCollider.SetActive(false);
         ForwardButtonStatusHider = Util.FindChildGameObjectByName(
             Util.FindChildGameObjectByName(gameObject, "ForwardButton"),
             "ForwardButtonHider");
@@ -31,6 +32,7 @@ public class UIBackForwardButtonController : MonoBehaviour
         BackwardButtonStatusCollider = Util.FindChildGameObjectByName(
             Util.FindChildGameObjectByName(gameObject, "BackwardButton"),
             "BackwardButtonCollider");
+        BackwardButtonStatusCollider.SetActive(false);
         BackwardButtonStatusHider = Util.FindChildGameObjectByName(
             Util.FindChildGameObjectByName(gameObject, "BackwardButton"),
             "BackwardButtonHider");

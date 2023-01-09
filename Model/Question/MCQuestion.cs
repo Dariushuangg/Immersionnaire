@@ -14,4 +14,10 @@ public class MCQuestion : Question
     {
         return numOfChoices;
     }
+
+    public bool AllowMultipleChoice()
+    {
+        // testing only
+        return true;
+    }
 }

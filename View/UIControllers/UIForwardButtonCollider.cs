@@ -8,7 +8,8 @@ public class UIForwardButtonCollider : MonoBehaviour
     void OnTriggerExit(Collider other)
     {
         GameObject UIBoard = gameObject.transform.parent.parent.parent.gameObject;
-        if (UIBoard == null) throw new Exception("Can't find GameObject: UIBoard");
-        UIBoard.GetComponent<MCUIMainController>().ForwardButtonSelected.Invoke();
+        Util.checkNull(UIBoard);
+        UIMainController UIMainController = (UIMainController)UIBoard.GetComponent(typeof(UIMainController));
+        UIMainController.ForwardButtonSelected.Invoke();
     }
 }
