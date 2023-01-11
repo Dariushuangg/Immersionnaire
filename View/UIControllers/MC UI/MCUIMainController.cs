@@ -7,7 +7,7 @@ using UnityEngine.Events;
 public class MCUIMainController : MonoBehaviour, UIMainController
 {
     public Dictionary<string, bool> IsLetterSelected { get; } = new Dictionary<string, bool>();
-    public UnityEvent MainButtomSelected;
+    public UnityEvent MainButtomSelected { get; set; }
     public UnityEvent ForwardButtonSelected { get; set; }
     public UnityEvent BackwardButtonSelected { get; set; }
 

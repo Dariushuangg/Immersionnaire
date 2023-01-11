@@ -38,6 +38,14 @@ public class SUISliderController : MonoBehaviour
         SliderID = int.Parse(gameObject.name.Last().ToString());
         SliderValueChanged = new UnityEvent<int, int>();
         SliderValueChanged.AddListener(SliderValueDisplayer.GetComponent<SUISliderValueDisplayerController>().SetSliderValueTo);
+        
+        // garbage warning
+        GameObject contentBoard = GameObject.FindGameObjectWithTag("Immersionnaire-ContentBoard");
+        GameObject progressbarParent = contentBoard.transform.Find("ProgressBars").gameObject;
+        Util.checkNull(progressbarParent);
+        SliderValueChanged.AddListener(progressbarParent.transform.Find("ProgressBarRef1").GetComponent<SContentProgressBarController>().UpdateProgressValueTo);
+        SliderValueChanged.AddListener(progressbarParent.transform.Find("ProgressBarRef2").GetComponent<SContentProgressBarController>().UpdateProgressValueTo);
+        // garbage warning
 
         /* Initialize sub-controllers */
         SliderValueDisplayer.GetComponent<SUISliderValueDisplayerController>().InitSUIValueDisplayer();

@@ -2,6 +2,7 @@ using UnityEngine.Events;
 
 public interface UIMainController
 {   
+    public UnityEvent MainButtomSelected { get; set; }
     public UnityEvent ForwardButtonSelected { get; set; }
     public UnityEvent BackwardButtonSelected { get; set; }
 
