@@ -12,6 +12,12 @@ public class SUISliderColliderController : MonoBehaviour
     private UnityEvent ColliderUngrabbed;
     private UnityEvent<SelectExitEventArgs> ColliderUngrabbedEvent;
     private UnityEvent<SelectEnterEventArgs> ColliderGrabbedEvent; // defined in grab interactable
+
+    void Start()
+    {
+        InitController();
+    }
+
     public void InitController()
     {
         ColliderGrabbedEvent = GetComponent<XRGrabInteractable>().selectEntered;
@@ -31,14 +37,14 @@ public class SUISliderColliderController : MonoBehaviour
     /// Maybe we should try anonymous function here.
     /// </summary>
     /// <param name="eventArgs"></param>
-    private void GetGrabberTransform(SelectEnterEventArgs eventArgs)
+    public void GetGrabberTransform(SelectEnterEventArgs eventArgs)
     {
         // SelectEnterEventArgs is-a BaseInteractionEventArgs
-        Transform grabberTransform = eventArgs.interactor.gameObject.transform;
-        ColliderGrabbedBy.Invoke(grabberTransform);
+        // Transform grabberTransform = eventArgs.interactor.gameObject.transform;
+        ColliderGrabbedBy.Invoke(gameObject.transform);
     }
 
-    private void UnsetGrab(SelectExitEventArgs eventArgs)
+    public void UnsetGrab(SelectExitEventArgs eventArgs)
     {
         ColliderUngrabbed.Invoke();
     }

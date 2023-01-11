@@ -50,6 +50,7 @@ public class Util : MonoBehaviour
     { 
         if (t == null)
         {
+            SetDebugLog("Transform is null: ", t.gameObject.name, true);
             Debug.Log("Transform is null");
             throw new Exception("Transform is null");
         }
@@ -59,6 +60,7 @@ public class Util : MonoBehaviour
     {
         if (go == null)
         {
+            SetDebugLog("GameObject is null: ", go.name, true);
             Debug.Log("GameObject is null");
             throw new Exception("GameObject is null");
         }
