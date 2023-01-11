@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,13 +7,17 @@ using UnityEngine.Events;
 
 public class SUISliderController : MonoBehaviour
 {
-    private UnityEvent<int, float> SliderValueChanged;
+    private UnityEvent<int, int> SliderValueChanged;
     private GameObject SliderTorus;
     private GameObject SliderValueDisplayer;
     private GameObject SliderCollider;
     private Transform ActiveGrabberTransform;
     private bool IsActive;
     private int SliderID;
+
+    // 0.62 -> -0.81 // Magic Number. Bad!!! To-be refactor into property files in future version
+    private readonly float SliderLeft = 0.62f;
+    private readonly float SliderRight = -0.81f;
 
     void Start()
     {
@@ -26,12 +31,13 @@ public class SUISliderController : MonoBehaviour
 
     public void InitController() 
     {
-        SliderValueChanged = new UnityEvent<int, float>();
         SliderTorus = gameObject.transform.Find("SliderTorus").gameObject;
         SliderValueDisplayer = gameObject.transform.Find("SliderValueDisplayer").gameObject;
         SliderCollider = gameObject.transform.Find("SliderCollider").gameObject;
         IsActive = false;
         SliderID = int.Parse(gameObject.name.Last().ToString());
+        SliderValueChanged = new UnityEvent<int, int>();
+        SliderValueChanged.AddListener(SliderValueDisplayer.GetComponent<SUISliderValueDisplayerController>().SetSliderValueTo);
     }
 
     /// <summary>
@@ -59,14 +65,19 @@ public class SUISliderController : MonoBehaviour
     /// </summary>
     private void UpdateSliderStatus() 
     {
+        /* Move slider and value displayer forward */
         Vector3 localChanges = gameObject.transform.InverseTransformPoint(ActiveGrabberTransform.position);
-        // 0.62 -> -0.81 // Magic Number. Bad! To-be refactor into property files in future version
-        float newX = Mathf.Clamp(localChanges.x, -0.81f, 0.62f);
+
+        float newX = Mathf.Clamp(localChanges.x, SliderRight, SliderLeft);
         SliderTorus.transform.localPosition = new Vector3(newX,
             SliderTorus.transform.localPosition.y,
             SliderTorus.transform.localPosition.z);
         SliderValueDisplayer.transform.localPosition = new Vector3(newX,
             SliderValueDisplayer.transform.localPosition.y,
             SliderValueDisplayer.transform.localPosition.z);
+
+        /* Broadcast slider value change event */
+        int sliderValue = (int) Math.Ceiling(Mathf.Abs(newX - SliderLeft) / Mathf.Abs(SliderRight - SliderLeft) * 10);
+        SliderValueChanged.Invoke(SliderID, sliderValue);
     }
 }

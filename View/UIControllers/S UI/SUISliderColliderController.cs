@@ -38,14 +38,14 @@ public class SUISliderColliderController : MonoBehaviour
     /// Maybe we should try anonymous function here.
     /// </summary>
     /// <param name="eventArgs"></param>
-    public void GetGrabberTransform(SelectEnterEventArgs eventArgs)
+    private void GetGrabberTransform(SelectEnterEventArgs eventArgs)
     {
         // SelectEnterEventArgs is-a BaseInteractionEventArgs
         Transform grabberTransform = eventArgs.interactor.gameObject.transform;
         ColliderGrabbedBy.Invoke(grabberTransform);
     }
 
-    public void UnsetGrab(SelectExitEventArgs eventArgs)
+    private void UnsetGrab(SelectExitEventArgs eventArgs)
     {
         ColliderUngrabbed.Invoke();
     }
