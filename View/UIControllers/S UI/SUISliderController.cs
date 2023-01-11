@@ -13,12 +13,10 @@ public class SUISliderController : MonoBehaviour
     private Transform ActiveGrabberTransform;
     private bool IsActive;
     private int SliderID;
-    int count;
 
     void Start()
     {
         InitController();
-        count = 0;
     }
 
     void Update()
@@ -34,7 +32,6 @@ public class SUISliderController : MonoBehaviour
         SliderCollider = gameObject.transform.Find("SliderCollider").gameObject;
         IsActive = false;
         SliderID = int.Parse(gameObject.name.Last().ToString());
-        Util.SetDebugLog("slider id check: ", SliderID + "", true);
     }
 
     /// <summary>
@@ -45,8 +42,6 @@ public class SUISliderController : MonoBehaviour
     {
         this.ActiveGrabberTransform = ActiveGrabberTransform;
         IsActive = true;
-        Util.SetDebugLog("SliderGrabbedHandler in slider controller", "called" + count, true);
-        count += 1;
     }
 
     public void SliderUngrabbedHandler() 
