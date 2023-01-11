@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.Events;
 
 public interface UIMainController
@@ -15,7 +12,8 @@ public interface UIMainController
     public void ShowResponseHistory(Response response);
 
     /// <summary>
-    /// Initialize main and sub-controllers based upon question contents.
+    /// Initialize main controller, which initialize all sub-controllers,
+    /// based upon the given question contents.
     /// </summary>
     /// <param name="question">Question to-be-rendered.</param>
     public void InitControllers(Question question);

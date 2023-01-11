@@ -13,13 +13,7 @@ public class SUISliderColliderController : MonoBehaviour
     private UnityEvent<SelectExitEventArgs> ColliderUngrabbedEvent;
     private UnityEvent<SelectEnterEventArgs> ColliderGrabbedEvent; // defined in grab interactable
 
-    void Start()
-    {
-        // For debugging
-        InitController();
-    }
-
-    public void InitController()
+    public void InitSliderCollider()
     {
         ColliderGrabbedEvent = GetComponent<XRGrabInteractable>().selectEntered;
         ColliderGrabbedEvent.AddListener(GetGrabberTransform);

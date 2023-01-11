@@ -21,7 +21,7 @@ public class SUISliderController : MonoBehaviour
 
     void Start()
     {
-        InitController();
+        InitSUISlider();
     }
 
     void Update()
@@ -29,7 +29,7 @@ public class SUISliderController : MonoBehaviour
         if (IsActive) UpdateSliderStatus();
     }
 
-    public void InitController() 
+    public void InitSUISlider() 
     {
         SliderTorus = gameObject.transform.Find("SliderTorus").gameObject;
         SliderValueDisplayer = gameObject.transform.Find("SliderValueDisplayer").gameObject;
@@ -38,6 +38,10 @@ public class SUISliderController : MonoBehaviour
         SliderID = int.Parse(gameObject.name.Last().ToString());
         SliderValueChanged = new UnityEvent<int, int>();
         SliderValueChanged.AddListener(SliderValueDisplayer.GetComponent<SUISliderValueDisplayerController>().SetSliderValueTo);
+
+        /* Initialize sub-controllers */
+        SliderValueDisplayer.GetComponent<SUISliderValueDisplayerController>().InitSUIValueDisplayer();
+        SliderCollider.GetComponent<SUISliderColliderController>().InitSliderCollider();
     }
 
     /// <summary>

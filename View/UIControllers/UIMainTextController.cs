@@ -12,10 +12,16 @@ public class UIMainTextController : MonoBehaviour
         MainText = canvas.transform.Find("MainText").GetComponent<TMPro.TextMeshProUGUI>();
     }
 
+    public void InitMainText(int questionIndex)
+    {
+        string mainText = "Question " + questionIndex;
+        SetMainText(mainText);
+    }
+
     /// <summary>
     /// Set the main text to the string passed in.
     /// </summary>
-    public void setMainText(string text)
+    public void SetMainText(string text)
     {
         MainText.text = text;
     }

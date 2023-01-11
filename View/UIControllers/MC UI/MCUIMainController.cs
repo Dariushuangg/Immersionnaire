@@ -15,6 +15,51 @@ public class MCUIMainController : MonoBehaviour, UIMainController
     private bool allowMultipleChoices;
     private Dictionary<string, GameObject> SelectedFrames = new Dictionary<string, GameObject>();
 
+    public void InitControllers(Question question)
+    {
+        MCQuestion mcquestion = (MCQuestion)question;
+
+        /* Register event handlers for UI events */
+        MainButtomSelected = new UnityEvent();
+        MainButtomSelected.AddListener(ConfirmingChoice);
+        GameObject presenter = GameObject.FindGameObjectWithTag("Immersionnaire-Presenter");
+        ForwardButtonSelected = new UnityEvent();
+        ForwardButtonSelected.AddListener(presenter.GetComponent<QuestionnairePresenter>().Forward);
+        BackwardButtonSelected = new UnityEvent();
+        BackwardButtonSelected.AddListener(presenter.GetComponent<QuestionnairePresenter>().Back);
+
+        this.numOfQuestions = mcquestion.numOfChoices;
+        this.allowMultipleChoices = mcquestion.AllowMultipleChoice();
+
+        /* Initialize an array to keep track of whether a choice is selected */
+        for (int i = 0; i < numOfQuestions; i++)
+        {
+            IsLetterSelected.Add(Util.indexToLetter(i), false);
+        }
+
+        /* Initialize backward and forward button controllers */
+        gameObject.transform.Find("BackForwardButtons")
+            .GetComponent<UIBackForwardButtonController>()
+            .InitForBackwardButtonControllers();
+
+        GameObject choices = gameObject.transform.Find("Choices").gameObject;
+        List<GameObject> allChoiceParents = Util.GetAllChildGameObjects(choices);
+        if (choices == null) throw new Exception("choices is null: choices");
+        foreach (GameObject choiceParent in allChoiceParents)
+        {
+            /* Initialize an array to keep track of selected frames that will react to UI events */
+            string letter = choiceParent.name;
+            Transform selectedFrame = choiceParent.transform.Find("SelectedFrame" + letter);
+            if (selectedFrame == null) throw new Exception("No such frame found: selectedFrame");
+            SelectedFrames.Add(letter, selectedFrame.gameObject);
+
+            /* Enable collider controllers */
+            Transform collider = choiceParent.transform.Find("Collider" + letter);
+            Util.checkNull(collider);
+            collider.GetComponent<MCUIChoiceCollider>().enabled = true;
+        }
+    }
+
     /// <summary>
     /// Callback function when a choice is unselected.
     /// </summary>
@@ -81,50 +126,6 @@ public class MCUIMainController : MonoBehaviour, UIMainController
         progressBar.GetComponent<MCUIProgressBarController>().fullProgressBarValue();
     }
 
-    public void InitControllers(Question question)
-    {
-        MCQuestion mcquestion = (MCQuestion)question;
-
-        /* Register event handlers for UI events */
-        MainButtomSelected = new UnityEvent();
-        MainButtomSelected.AddListener(ConfirmingChoice);
-        GameObject presenter = GameObject.FindGameObjectWithTag("Immersionnaire-Presenter");
-        ForwardButtonSelected = new UnityEvent();
-        ForwardButtonSelected.AddListener(presenter.GetComponent<QuestionnairePresenter>().Forward);
-        BackwardButtonSelected = new UnityEvent();
-        BackwardButtonSelected.AddListener(presenter.GetComponent<QuestionnairePresenter>().Back);
-
-        this.numOfQuestions = mcquestion.numOfChoices;
-        this.allowMultipleChoices = mcquestion.AllowMultipleChoice();
-
-        /* Initialize an array to keep track of whether a choice is selected */
-        for (int i = 0; i < numOfQuestions; i++)
-        {
-            IsLetterSelected.Add(Util.indexToLetter(i), false);
-        }
-
-        /* Initialize backward and forward button controllers */
-        gameObject.transform.Find("BackForwardButtons")
-            .GetComponent<UIBackForwardButtonController>()
-            .InitForBackwardButtonControllers();
-
-        GameObject choices = gameObject.transform.Find("Choices").gameObject;
-        List<GameObject> allChoiceParents = Util.GetAllChildGameObjects(choices);
-        if (choices == null) throw new Exception("choices is null: choices");
-        foreach (GameObject choiceParent in allChoiceParents)
-        {
-            /* Initialize an array to keep track of selected frames that will react to UI events */
-            string letter = choiceParent.name;
-            Transform selectedFrame = choiceParent.transform.Find("SelectedFrame" + letter);
-            if (selectedFrame == null) throw new Exception("No such frame found: selectedFrame");
-            SelectedFrames.Add(letter, selectedFrame.gameObject);
-
-            /* Enable collider controllers */
-            Transform collider = choiceParent.transform.Find("Collider" + letter);
-            Util.checkNull(collider);
-            collider.GetComponent<MCUIChoiceCollider>().enabled = true;
-        }
-    }
 
     private void ConfirmingChoice()
     {

@@ -7,12 +7,7 @@ public class SUISliderValueDisplayerController : MonoBehaviour
     private TMPro.TextMeshProUGUI DisplayValueText;
     private int SliderValue;
 
-    void Start()
-    {
-        InitController();
-    }
-
-    public void InitController()
+    public void InitSUIValueDisplayer()
     {
         DisplayValueText = gameObject.transform
             .Find("SliderValueCanvas")

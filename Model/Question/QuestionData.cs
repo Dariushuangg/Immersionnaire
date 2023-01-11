@@ -5,6 +5,7 @@
 [System.Serializable]
 public class QuestionData
 {
+    public int idx;
     public string questionType;
     public string prompt;
     public bool canSkip;
