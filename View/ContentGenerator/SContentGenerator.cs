@@ -3,27 +3,41 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SContentGenerator : MonoBehaviour
+public class SContentGenerator : MonoBehaviour, ContentGenerator
 {
-    public GameObject SChoices;
+    public GameObject SContentBoard;
 
     /*
      * Generate a linear scale question's choice, consists of a subprompt and the scale bar.
      */
-    public List<GameObject> generateChoices(Question question) {
-        Debug.Log("generateChoices called for scale question");
-        List<GameObject> generateChoices = new List<GameObject>();
-        string[] choiceTexts = ((SQuestion)question).subprompts;
-        if (choiceTexts == null) throw new Exception("No choiceText field found: choiceTexts");
-        for (int i = 0; i < ((SQuestion)question).numOfSubprompts; i++)
-        {
-            GameObject generatedChoice = Instantiate(SChoices, Vector3.zero, Quaternion.identity);
-            generatedChoice
-                .transform.Find("MCChoiceCanvas")
-                .transform.Find("MCChoiceText")
-                .GetComponent<TMPro.TextMeshProUGUI>().text = Util.indexToLetter(i) + ". " + choiceTexts[i];
-            generateChoices.Add(generatedChoice);
-        }
-        return generateChoices;
+    public GameObject GenerateContents(Question question) {
+        SContentBoard = Resources.Load<GameObject>("Prefabs/ContentBoard/SQContentBoard");
+        GameObject generatedContentBoard = Instantiate(SContentBoard, Vector3.zero, Quaternion.identity);
+
+        /* Initialize content controllers */
+        // 1. Main Text
+        generatedContentBoard.transform
+            .Find("MainTitleTextRef")
+            .Find("MainTextCanvas")
+            .Find("MainText")
+            .gameObject
+            .GetComponent<TMPro.TextMeshProUGUI>().text = "Question" + question.index;
+
+        // 2. Prompt text
+        generatedContentBoard.transform
+            .Find("QuestionTextRef")
+            .Find("QuestionTextCanvas")
+            .Find("QuestionText")
+            .gameObject
+            .GetComponent<TMPro.TextMeshProUGUI>().text = question.prompt;
+
+        // 3. Question text
+        // I am stealing from subprompt controller for UI Board :)
+        string[] subpromptTexts = ((SQuestion)question).subprompts;
+        if (subpromptTexts == null) throw new Exception("No subpromptTexts field found: subpromptTexts");
+        generatedContentBoard.transform.Find("Subprompts")
+            .GetComponent<SUISubpromptsController>().InitSubprompts(subpromptTexts);
+
+        return generatedContentBoard;
     }
 }

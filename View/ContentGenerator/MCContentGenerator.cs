@@ -19,6 +19,7 @@ public class MCContentGenerator : MonoBehaviour, ContentGenerator
         GameObject generatedContentBoard = Instantiate(MCContentBoard, Vector3.zero, Quaternion.identity);
 
         /* Generate text for MC ContentBoard. */
+        // TODO: To-be refactored into separate content controllers
         // 1. Question texts
         for (int i = 0; i < mcquestion.numOfChoices; i ++)
         {
@@ -31,15 +32,15 @@ public class MCContentGenerator : MonoBehaviour, ContentGenerator
                 .GetComponent<TMPro.TextMeshProUGUI>().text = Util.indexToLetter(i) + ". " + choiceTexts[i];
         }
 
-        // 2. Main texts
+        // 2. Main texts (reusable with SContent, need to refactor)
         generatedContentBoard.transform
             .Find("MainTitleTextRef")
             .Find("MainTextCanvas")
             .Find("MainText")
             .gameObject
-            .GetComponent<TMPro.TextMeshProUGUI>().text = "Question" + "1";
+            .GetComponent<TMPro.TextMeshProUGUI>().text = "Question " + question.index;
 
-        // 3. Prompt text
+        // 3. Prompt text (reusable with SContent, need to refactor)
         generatedContentBoard.transform
             .Find("QuestionTextRef")
             .Find("QuestionTextCanvas")
