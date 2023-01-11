@@ -15,7 +15,7 @@ public class SUISliderController : MonoBehaviour
 
     void Update()
     {
-        if (IsActive) FollowActiveGrabber();
+        if (IsActive) UpdateSliderStatus();
     }
 
     public void InitController() 
@@ -37,5 +37,8 @@ public class SUISliderController : MonoBehaviour
         this.ActiveGrabberTransform = ActiveGrabberTransform;
     }
 
-    private void FollowActiveGrabber() { }
+    /// <summary>
+    /// Follow active grabber and broadcast slider value change event. 
+    /// </summary>
+    private void UpdateSliderStatus() { }
 }
