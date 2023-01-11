@@ -21,7 +21,7 @@ public class SContentGenerator : MonoBehaviour, ContentGenerator
             .Find("MainTextCanvas")
             .Find("MainText")
             .gameObject
-            .GetComponent<TMPro.TextMeshProUGUI>().text = "Question" + question.index;
+            .GetComponent<TMPro.TextMeshProUGUI>().text = "Question " + question.index;
 
         // 2. Prompt text
         generatedContentBoard.transform

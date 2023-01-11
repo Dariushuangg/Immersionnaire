@@ -22,7 +22,6 @@ public class UIFactory : MonoBehaviour
         // Initialization of all sub-controllers are completed in the main controller's InitControllers(). 
         UIMainController mainController = (UIMainController)generatedUIBoard.GetComponent(typeof(UIMainController));
         mainController.InitControllers(question);
-
         return generatedUIBoard;
     }
 }
