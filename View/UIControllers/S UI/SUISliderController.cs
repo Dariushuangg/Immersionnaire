@@ -32,9 +32,16 @@ public class SUISliderController : MonoBehaviour
     /// Cache the active grabber's transform for the slider bar to follow.
     /// </summary>
     /// <param name="ActiveGrabberTransform">Transform of the active grabber of the collider.</param>
-    public void SetGrabberTo(Transform ActiveGrabberTransform)
+    public void SliderGrabbedHandler(Transform ActiveGrabberTransform)
     {
         this.ActiveGrabberTransform = ActiveGrabberTransform;
+        IsActive = true;
+    }
+
+    public void SliderUngrabbedHandler() 
+    {
+        ActiveGrabberTransform = null;
+        IsActive = false;
     }
 
     /// <summary>
