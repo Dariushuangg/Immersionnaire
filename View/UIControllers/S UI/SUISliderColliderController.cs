@@ -35,8 +35,8 @@ public class SUISliderColliderController : MonoBehaviour
     private void GetGrabberTransform(SelectEnterEventArgs eventArgs)
     {
         // SelectEnterEventArgs is-a BaseInteractionEventArgs
-        Transform grabberTransform = eventArgs.interactor.gameObject.transform;
-        ColliderGrabbedBy.Invoke(grabberTransform);
+        // Transform grabberTransform = eventArgs.interactor.gameObject.transform;
+        ColliderGrabbedBy.Invoke(gameObject.transform);
     }
 
     private void UnsetGrab(SelectExitEventArgs eventArgs)

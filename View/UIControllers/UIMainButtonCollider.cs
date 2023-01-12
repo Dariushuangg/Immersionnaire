@@ -11,7 +11,9 @@ public class UIMainButtonCollider : MonoBehaviour
         // Invoke the selecting event defined in main controller 
         GameObject UIBoard = gameObject.transform.parent.parent.gameObject;
         if (UIBoard == null) throw new Exception("GameObject is null: " + UIBoard);
-        UIBoard.GetComponent<UIMainController>().MainButtomSelected.Invoke();
+        UIMainController mainController = (UIMainController) UIBoard.GetComponent(typeof(UIMainController));
+        if (mainController == null) throw new Exception("mainController is null in " + UIBoard.name);
+        mainController.MainButtomSelected.Invoke();
         Util.SetDebugLog("OnTriggerExit called", "", true);
     }
 

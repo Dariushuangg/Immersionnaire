@@ -46,6 +46,7 @@ public class SContentProgressBarController : MonoBehaviour
         foreach(int value in ProgressBarValuesDict.Keys)
         {
             if (value <= currentValue) ProgressBarValuesDict[value].GetComponent<MeshRenderer>().enabled = true;
+            else ProgressBarValuesDict[value].GetComponent<MeshRenderer>().enabled = false;
         }
 
         gameObject.transform

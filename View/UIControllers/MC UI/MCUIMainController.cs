@@ -58,6 +58,10 @@ public class MCUIMainController : MonoBehaviour, UIMainController
             Util.checkNull(collider);
             collider.GetComponent<MCUIChoiceCollider>().enabled = true;
         }
+
+        // Initialize main text
+        gameObject.transform.Find("MainTitleTextRef").gameObject
+            .GetComponent<UIMainTextController>().InitMainText(question.index);
     }
 
     /// <summary>
