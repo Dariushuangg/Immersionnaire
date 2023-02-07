@@ -23,6 +23,7 @@ public class MCContentController : MonoBehaviour
         if (MCChoiceEffects.Count == 0) throw new Exception("Initialization failed: MCChoiceEffects");
     }
 
+    // Turn on the selection frame
     public void showContentEffectOn(string choice) 
     { 
         foreach(string letter in MCChoiceEffects.Keys)
@@ -31,6 +32,7 @@ public class MCContentController : MonoBehaviour
         }
     }
 
+    // Turn off the selection frame
     public void hideContentEffectOn(string choice)
     {
         foreach (string letter in MCChoiceEffects.Keys)

@@ -59,6 +59,9 @@ public class QuestionnairePresenter : MonoBehaviour
         ShowQuestionAt(currQuestionIndex);
     }
 
+    /// <summary>
+    /// Move back to previous position, show cached result.
+    /// </summary>
     public void Back()
     {
         currQuestionIndex--;
