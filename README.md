@@ -10,5 +10,8 @@ Click the image to jump to Youtube!!!!!:
 <img width="500" height="400" src="https://user-images.githubusercontent.com/111829337/211992467-b6c9173a-954c-4021-9b21-a1a6e519b131.png">
 </a>
 
+# Progress
+See issues.
+
 # Dev Doc
 On its way!
